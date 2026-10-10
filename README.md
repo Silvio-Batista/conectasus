@@ -4,6 +4,8 @@ Aplicação web para gerenciar pacientes vinculados a unidades de saúde, desenv
 
 O backend expõe uma API REST em Laravel 12 e o frontend é uma página única servida pelo Blade, construída com Bootstrap 5 e JavaScript puro (Fetch API), sem frameworks SPA e sem dependência de Node.js.
 
+Desenvolvido por **Silvio Batista** · [LinkedIn](https://linkedin.com/in/silvio-p-batista) · [GitHub](https://github.com/Silvio-Batista) · [Portfólio](https://portfolio-silvio.vercel.app) — veja [Processo de desenvolvimento e uso de IA](#processo-de-desenvolvimento-e-uso-de-ia).
+
 ## Funcionalidades
 
 - Listagem de pacientes ordenada por nome, com a unidade de saúde de cada um
@@ -260,8 +262,25 @@ As três consultas obrigatórias estão em [`sql/consultas.sql`](sql/consultas.s
 - **Docker**: `vendor` do container fica em um volume nomeado — em hosts Windows/macOS o bind mount deixava cada requisição com vários segundos; com o volume a latência caiu para ~0,3 s. O código da aplicação continua montado por volume.
 - **Frontend sem build**: Bootstrap, ícones e fonte via CDN (com SRI), CSS e JS próprios em `public/`. Dados da API são sempre inseridos com `textContent`.
 
-## Não implementado (fora do escopo do desafio)
+## Processo de desenvolvimento e uso de IA
 
-- Autenticação e permissões
-- CRUD de unidades de saúde (a API é somente leitura para unidades)
-- Restauração de pacientes excluídos (soft delete sem endpoint de restore)
+Este projeto foi construído com o apoio do **Cursor**, editor com agente de IA integrado. A escrita do código foi feita pela IA, mas o trabalho foi dirigido do início ao fim por mim, **Silvio Batista**: o prompt que orientou todo o desenvolvimento foi desenhado e arquitetado por mim, funcionando como a especificação técnica do projeto.
+
+O que o prompt definiu antes de qualquer linha de código:
+
+- **Contexto e escopo**: o problema a resolver, as funcionalidades obrigatórias e o que não deveria ser implementado (autenticação, permissões, filas, CRUD de unidades, abstrações desnecessárias).
+- **Stack e arquitetura**: Laravel 12 em MVC expondo API REST, Eloquent, Form Requests e API Resources; Blade apenas para servir a página; Bootstrap 5 e JavaScript puro com Fetch API; Docker com PHP-FPM, Nginx e MySQL 8; a responsabilidade de cada camada e a estrutura de diretórios.
+- **Modelagem e contrato**: tabelas, colunas, índices e chaves estrangeiras; relacionamentos Eloquent; seeders; todos os endpoints com seus códigos HTTP; regras de validação campo a campo com as mensagens em português; o formato exato das respostas JSON.
+- **Qualidade**: testes automatizados com os cenários mínimos a cobrir, banco de testes isolado, exercício SQL obrigatório, regras de código limpo e proibição de dados mockados, TODOs ou botões sem função.
+- **Experiência do usuário**: direção visual, paleta de cores, tipografia, estados de carregamento, vazio, erro e sucesso, responsividade e acessibilidade.
+- **Método de execução**: desenvolvimento em fases (backend validado antes do frontend), etapas ordenadas, verificações obrigatórias em cada etapa, organização dos commits e critérios de aceite para considerar o projeto concluído.
+
+Durante a execução, acompanhei o trabalho do agente, revisei o código gerado, tomei as decisões de modelagem que fugiam ao enunciado (UUID nos pacientes, exclusão lógica e as unidades de saúde iniciais), validei o ambiente Docker e a aplicação na minha máquina e organizei o repositório Git. O resultado reflete, portanto, uma especificação pensada por um desenvolvedor e executada com o apoio de IA, com cada requisito verificado antes de ser dado como pronto.
+
+## Autor
+
+**Silvio Batista**
+
+- LinkedIn: [linkedin.com/in/silvio-p-batista](https://linkedin.com/in/silvio-p-batista)
+- GitHub: [github.com/Silvio-Batista](https://github.com/Silvio-Batista)
+- Portfólio: [portfolio-silvio.vercel.app](https://portfolio-silvio.vercel.app)
