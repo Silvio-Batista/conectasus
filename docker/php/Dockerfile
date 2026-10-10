@@ -29,11 +29,11 @@ RUN apt-get update \
 # Composer copiado da imagem oficial (sem instalar via curl | sh).
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-# Alinha o usuário www-data ao UID/GID informados e garante um diretório
-# gravável para o cache do Composer.
+# Alinha o usuário www-data ao UID/GID informados e garante diretórios graváveis
+# para o cache do Composer e para o volume nomeado do vendor (ver compose.yaml).
 RUN groupmod -o -g "${GID}" www-data \
     && usermod -o -u "${UID}" -g www-data www-data \
-    && mkdir -p /var/www/.composer \
+    && mkdir -p /var/www/.composer /var/www/html/vendor \
     && chown -R www-data:www-data /var/www
 
 ENV COMPOSER_HOME=/var/www/.composer

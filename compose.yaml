@@ -19,6 +19,10 @@ services:
     working_dir: /var/www/html
     volumes:
       - .:/var/www/html
+      # O vendor do container fica em um volume nomeado (sistema de arquivos do Docker),
+      # o que torna a aplicação muito mais rápida em hosts Windows/macOS.
+      # Ele é populado com "docker compose exec app composer install".
+      - vendor_data:/var/www/html/vendor
     environment:
       # Dentro do Docker a aplicação sempre fala com o serviço "db",
       # independentemente do DB_HOST configurado no .env para uso local.
@@ -87,3 +91,4 @@ services:
 
 volumes:
   db_data:
+  vendor_data:
