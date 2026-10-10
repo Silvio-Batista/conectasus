@@ -18,12 +18,17 @@ class PatientResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'uuid' => $this->uuid,
             'name' => $this->name,
             'cpf' => $this->cpf,
             'birth_date' => $this->birth_date?->toDateString(),
             'phone' => $this->phone,
             'health_unit_id' => $this->health_unit_id,
-            'health_unit' => HealthUnitResource::make($this->whenLoaded('healthUnit')),
+            // Só é incluído quando o relacionamento foi carregado (eager loading).
+            'health_unit' => $this->whenLoaded(
+                'healthUnit',
+                fn () => $this->healthUnit ? HealthUnitResource::make($this->healthUnit) : null
+            ),
         ];
     }
 }

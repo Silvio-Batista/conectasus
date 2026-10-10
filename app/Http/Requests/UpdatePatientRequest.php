@@ -28,7 +28,7 @@ class UpdatePatientRequest extends StorePatientRequest
             'cpf' => [...$optional, 'bail', 'required', 'digits:11', Rule::unique('patients', 'cpf')->ignore($patient)],
             'birth_date' => [...$optional, 'bail', 'required', 'date', 'before_or_equal:today'],
             'phone' => [...$optional, 'bail', 'nullable', 'digits_between:10,11'],
-            'health_unit_id' => [...$optional, 'bail', 'required', 'integer', Rule::exists('health_units', 'id')],
+            'health_unit_id' => [...$optional, 'bail', 'required', 'integer', $this->healthUnitExists()],
         ];
     }
 }

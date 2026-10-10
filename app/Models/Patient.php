@@ -5,14 +5,16 @@ namespace App\Models;
 use Database\Factories\PatientFactory;
 use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Patient extends Model
 {
     /** @use HasFactory<PatientFactory> */
-    use HasFactory;
+    use HasFactory, HasUuids, SoftDeletes;
 
     /**
      * @var list<string>
@@ -33,6 +35,17 @@ class Patient extends Model
         return [
             'birth_date' => 'date:Y-m-d',
         ];
+    }
+
+    /**
+     * O UUID é gerado automaticamente na coluna "uuid"; a chave primária
+     * (e o identificador usado nas rotas da API) continua sendo o "id".
+     *
+     * @return list<string>
+     */
+    public function uniqueIds(): array
+    {
+        return ['uuid'];
     }
 
     /**

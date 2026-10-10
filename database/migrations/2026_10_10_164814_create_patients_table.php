@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * Run the migrations.
+     * Pacientes vinculados a uma unidade de saúde.
      */
     public function up(): void
     {
@@ -18,15 +18,13 @@ return new class extends Migration
             $table->char('cpf', 11)->unique();
             $table->date('birth_date');
             $table->string('phone', 20)->nullable();
+            // Impede a exclusão de uma unidade que ainda possua pacientes vinculados.
             $table->foreignId('health_unit_id')->constrained()->restrictOnDelete();
             $table->timestamps();
             $table->softDeletes();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('patients');

@@ -7,11 +7,11 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * Run the migrations.
+     * Unidades de saúde às quais os pacientes são vinculados.
      */
     public function up(): void
     {
-        Schema::create('healt_units', function (Blueprint $table) {
+        Schema::create('health_units', function (Blueprint $table) {
             $table->id();
             $table->uuid('uuid')->unique();
             $table->string('name', 150);
@@ -21,11 +21,8 @@ return new class extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
-        Schema::dropIfExists('healt_units');
+        Schema::dropIfExists('health_units');
     }
 };

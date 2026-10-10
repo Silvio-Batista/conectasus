@@ -5,6 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Exists;
 
 class StorePatientRequest extends FormRequest
 {
@@ -42,8 +43,16 @@ class StorePatientRequest extends FormRequest
             'cpf' => ['bail', 'required', 'digits:11', Rule::unique('patients', 'cpf')],
             'birth_date' => ['bail', 'required', 'date', 'before_or_equal:today'],
             'phone' => ['bail', 'nullable', 'digits_between:10,11'],
-            'health_unit_id' => ['bail', 'required', 'integer', Rule::exists('health_units', 'id')],
+            'health_unit_id' => ['bail', 'required', 'integer', $this->healthUnitExists()],
         ];
+    }
+
+    /**
+     * A unidade informada precisa existir e não pode estar excluída (soft delete).
+     */
+    protected function healthUnitExists(): Exists
+    {
+        return Rule::exists('health_units', 'id')->whereNull('deleted_at');
     }
 
     /**
