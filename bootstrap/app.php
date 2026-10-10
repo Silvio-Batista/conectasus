@@ -1,8 +1,11 @@
 <?php
 
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Http\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -15,5 +18,19 @@ return Application::configure(basePath: dirname(__DIR__))
         //
     })
     ->withExceptions(function (Exceptions $exceptions): void {
-        //
+        // Toda a API responde em JSON, mesmo quando o cliente não envia Accept: application/json.
+        $exceptions->shouldRenderJsonWhen(
+            fn (Request $request, Throwable $e): bool => $request->is('api/*') || $request->expectsJson()
+        );
+
+        // Mensagens em português para registros e rotas inexistentes na API.
+        $exceptions->render(function (NotFoundHttpException $e, Request $request) {
+            if ($request->is('api/*')) {
+                $message = $e->getPrevious() instanceof ModelNotFoundException
+                    ? 'Registro não encontrado.'
+                    : 'Rota não encontrada.';
+
+                return response()->json(['message' => $message], 404);
+            }
+        });
     })->create();

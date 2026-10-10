@@ -2,6 +2,5 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Página única da aplicação. Toda a interação acontece via JavaScript + API REST.
+Route::view('/', 'patients')->name('home');
